@@ -1,0 +1,179 @@
+---
+title: "dN/dS and RELAX analysis"
+author: "Stefanos Siozios"
+date: '2022-10-24'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries.
+```{r, echo=TRUE, message=FALSE}
+library(rjson)
+library(ggplot2)
+library(ggridges)
+library(reshape2)
+library(patchwork)
+library(tidyverse)
+```
+
+## Retrieve branch wide dN/dS estimates for all single copy orthologs.
+## Initialize data files and loop over .json files to retrieve data.
+```{r,echo=TRUE, message=FALSE}
+folder<-"/home/stefanos/workingDIR/Arsenophonus/all_genomes/with_new_sra/ForRELAX/RELAX_perGene_results/groupMode/"
+files<-dir(folder,pattern =".json")
+
+pval<-NA
+kapi<-NA
+knv<-NA
+kv<-NA
+dNSapi<-NA
+dNSnv<-NA
+dNSv<-NA
+dNSout<-NA
+OGid<-NA
+results<-list()
+
+for (q in 1:length(files)){
+  OG<-gsub(pattern="[.].*$", replacement = "\\1",x=files[q])
+  OGid[q]<-OG
+  tmp <- fromJSON(file = paste(folder,files[q],sep=""))
+  results[[q]]<-tmp
+  pval[q]<-tmp$`test results`$`p-value`
+  kapi[q]<-tmp$`test results`$`relaxation or intensification parameter`$`api`
+  knv[q]<-tmp$`test results`$`relaxation or intensification parameter`$`nv`
+  kv[q]<-tmp$`test results`$`relaxation or intensification parameter`$`ve`
+  dNSapi[q]<-tmp$fits$`MG94xREV with separate rates for branch sets`$`Rate Distributions`$`non-synonymous/synonymous rate ratio for *api*`[[1]][[1]]
+  dNSnv[q]<-tmp$fits$`MG94xREV with separate rates for branch sets`$`Rate Distributions`$`non-synonymous/synonymous rate ratio for *nv*`[[1]][[1]]
+  dNSv[q]<-tmp$fits$`MG94xREV with separate rates for branch sets`$`Rate Distributions`$`non-synonymous/synonymous rate ratio for *ve*`[[1]][[1]]
+  dNSout[q]<-tmp$fits$`MG94xREV with separate rates for branch sets`$`Rate Distributions`$`non-synonymous/synonymous rate ratio for *out*`[[1]][[1]]
+ }
+```
+
+## Initialize and read data for one-by-one post-hoc analysis.
+```{r,echo=TRUE, message=FALSE}
+pval<-NA
+OGid<-NA
+results<-list()
+
+fd<-c("nv", "api", "ve")
+for (fd in fd){
+  folder<-paste("/home/stefanos/workingDIR/Arsenophonus/all_genomes/with_new_sra/ForRELAX/RELAX_perGene_results/post-hoc/",fd,"-out/",sep = "")
+  files<-dir(folder,pattern =".json")
+  
+  # loop over json file and retrieve data and store data in data frames.
+  for (q in 1:length(files)){
+    OG<-gsub(pattern="[.].*$","\\1",perl=T,x=files[q])
+    OGid[q]<-OG
+    if (file.size(paste(folder,files[q],sep="")) == 0L) {
+      pval[q]<-NA
+    } else {
+      result <- fromJSON(file = paste(folder,files[q],sep=""))
+      results[[q]]<-result
+      pval[q]<-result$`test results`$`p-value`
+    }
+  }
+  assign(paste("q",fd,sep=""),p.adjust(pval, method="BH"))  
+} 
+```
+
+## Combine data in dataframe and do some basic graphs.
+```{r, fig.width = 6, fig.height = 5, echo=TRUE, warning=FALSE}
+allRELAX<-data.frame(OGid %>% cbind(.,dNSout) %>% cbind(.,dNSapi) %>% cbind(.,dNSnv) %>% cbind(.,dNSv) %>% cbind(.,kapi) %>% cbind(.,knv) %>% cbind(.,kv) %>% cbind(.,qapi) %>% cbind(.,qnv) %>% cbind(.,qve),stringsAsFactors = F)
+i <- c(2:11)
+allRELAX[ , i] <- apply(allRELAX[ , i], 2, function(x) as.numeric(as.character(x)))
+names(allRELAX)[1] <- "GC"
+
+# remove rows if any of the dN/dS values is > 5
+allRELAX2<-allRELAX[!(allRELAX$dNSout>5 | allRELAX$dNSapi>5 | allRELAX$dNSnv>5 | allRELAX$dNSv>5),]
+boxplot(allRELAX2$dNSout,allRELAX2$dNSapi,allRELAX2$dNSnv,allRELAX2$dNSv, names=c("out","api","nv","v"), ylab="dN/dS", outline=T, notch=TRUE)
+
+boxplot(log(allRELAX2$kapi,2), log(allRELAX2$knv,2), log(allRELAX2$kv,2), names=c("api","nv","v"), ylab="relaxation or intensification parameter k (log2)", outline=F)
+abline(h=0, col="red", lty=2)
+
+```
+
+## Calculate delta dN/dS and plot data.
+```{r, fig.width = 6, fig.height = 5, echo=TRUE, warning=FALSE}
+delta<-data.frame(allRELAX2$GC %>% cbind(.,(allRELAX2$dNSapi)-(allRELAX2$dNSout)) %>% cbind(.,(allRELAX2$dNSnv)-(allRELAX2$dNSout)) %>% cbind(.,(allRELAX2$dNSv)-(allRELAX2$dNSout)) %>% cbind(.,(allRELAX2$dNSnv)-(allRELAX2$dNSapi)) %>% cbind(.,(allRELAX2$dNSv)-(allRELAX2$dNSapi)) %>% cbind(.,(allRELAX2$dNSv)-(allRELAX2$dNSnv)))
+colnames(delta) <- c("GC", "api-out", "nv-out", "v-out", "nv-api", "v-api", "v-nv")
+i <- c(2:7)
+delta[ , i] <- apply(delta[ , i], 2, function(x) as.numeric(as.character(x)))
+
+
+ddf<-melt(delta, id.vars="GC", measure.vars=c("api-out", "nv-out", "v-out"))
+p1<-ggplot(ddf, aes(x=value, y=variable, fill=variable)) +  
+  stat_density_ridges(jittered_points = TRUE, position = "points_jitter", alpha=0.6,  quantile_lines = TRUE, vline_size = 1, quantiles = 2) +
+  theme_ridges(font_size = 16) +
+  scale_fill_manual(values=c("#6B990F","#990F0F","#0F6B99")) +
+  scale_x_continuous(limits=c(-0.2,0.5),name =expression(paste(italic("Δ"),"dN/dS"))) +
+  scale_y_discrete(name="", labels=c("vertical","nasoniae","apicola"),limits=rev) +
+  theme(legend.position="none") +
+  geom_vline(xintercept = 0, linetype="dashed", 
+             color = "red", size=1)
+print(p1)
+```
+
+## Detail comparison between nasoniae and apicola clade.
+```{r,fig.width = 6, fig.height = 5, echo=TRUE, warning=FALSE}
+# plots
+c<-(allRELAX2$dNSnv)-(allRELAX2$dNSapi)
+p3<-ggplot(allRELAX2, aes(x=c)) +
+  geom_histogram(color="darkgray", fill="gray", bins = 80) +
+  geom_vline(aes(xintercept=median(c)), color="black", linetype="dashed", size=1) +
+  geom_vline(aes(xintercept=0), color="red", linetype="solid", size=1) +
+  scale_x_continuous(name =expression(paste(italic("Δ"[nv-api]),"dN/dS"))) +
+  theme_bw() +
+  scale_y_continuous(name ="Frequency") +
+  theme(legend.position="none", axis.title = element_text(color="black", size=16),
+        axis.text = element_text(size = 16))
+
+p4<-ggplot(allRELAX2, aes(x=c)) +
+  geom_histogram(color="darkgray", fill="gray", bins = 80) +
+  geom_vline(aes(xintercept=median(c)), color="black", linetype="dashed", size=1) +
+  geom_vline(aes(xintercept=0), color="red", linetype="solid", size=1) +
+  scale_x_continuous(limits=c(-0.2,0.2),name =expression(paste(italic("Δ"[nv-api]),"dN/dS"))) +
+  theme_bw() +
+  scale_y_continuous(name ="Frequency") +
+  theme(legend.position="none", axis.title = element_text(color="black", size=9),
+        axis.text = element_text(size = 9))
+
+p3 + inset_element(p4, left = 0.48, bottom = 0.5, right = 0.99, top = 0.99)
+
+# run Wilcoxon signed rank test
+wilcox.test((allRELAX2$dNSnv)-(allRELAX2$dNSapi), mu = 0)
+```
+
+## Plot relaxation of selection parameter k (log2) with points colored by significance values.
+```{r,fig.width = 4, fig.height = 6,echo=TRUE, warning=FALSE}
+allRELAX_k<-melt(allRELAX2, id.vars="GC", measure.vars=c("kapi","knv","kv"))
+allRELAX_q<-melt(allRELAX2, id.vars="GC", measure.vars=c("qapi","qnv","qve"), variable.name = "clade", value.name = "qval")
+allRELAX_kn<-allRELAX_k %>% cbind(.,allRELAX_q$qval)
+names(allRELAX_kn)[4] <- "qval"
+
+# make boxplots with jitter points
+allRELAX_kn$qc=ifelse(allRELAX_kn$qval<0.1,"A","B")
+
+p2<-ggplot(allRELAX_kn, aes(x=variable, y=log(value,2))) +
+  geom_boxplot(aes(color=variable), outlier.shape = NA) +
+  scale_color_manual(values=c("red","black","#6B990F","#990F0F","#0F6B99")) +
+  geom_point(aes(color=qc), position=position_jitterdodge(jitter.width =0.4, dodge.width = 0), alpha=0.5) +
+  scale_x_discrete(name="", labels=c("apicola","nasoniae","vertical")) +
+  geom_hline(yintercept = 0, colour = "red", linetype = "dashed") +
+  theme_bw() +
+  scale_y_continuous(limits=c(-6,6),name ="relaxation or intensification parameter k (log2)") +
+  theme(legend.position="none", axis.title = element_text(color="black", size=16),
+        axis.text = element_text(size = 16))
+plot(p2)
+```
+
+## Final combined plot.
+```{r,fig.width = 10, fig.height = 8, echo=TRUE, warning=FALSE}
+p1/(p3 + inset_element(p4, left = 0.48, bottom = 0.5, right = 0.99, top = 0.99))  | p2 +
+theme(plot.tag = element_text(size = 14, hjust = 0, vjust = 0))
+```
+
