@@ -69,12 +69,6 @@ p6<-ggplot(anot2, aes(x=variable, y=strain)) +
   theme_minimal(base_size=16)
 
 
-###status and crispr
-#anot3<-melt(anot, id.vars="strain", measure.vars=c("status","crispr"))
-#p7<-ggplot(anot3, aes(x=variable, y=strain)) + 
-#  geom_tile(aes(fill=value),color = "white", linewidth = 1.5) + scale_fill_viridis_d(option = "B", na.value = 'white') + 
-#  scale_y_discrete(name="", labels=c()) +
-#  theme_minimal()
 
 # Core phyloTree with support values
 tree <- read.newick(file = "tree.nwk", node.label = "label")
