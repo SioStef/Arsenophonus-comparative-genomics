@@ -13,3 +13,10 @@
 5. run snakemake within the ideel directory
 
 `snakemake` 
+
+6. Get the proportion of interupted genes from ideel .data output files
+
+```
+cd lengths
+for i in *.data; do cat $i | awk -v VAR=$i  '{ c+=($1/$2 <0.8) } END { print VAR, c, NR, c/NR }' >> summary.txt ; done
+```
