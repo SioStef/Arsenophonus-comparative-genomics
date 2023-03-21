@@ -8,7 +8,7 @@
 
 3. Download and format for [Diamond](https://github.com/bbuchfink/diamond/wiki) the uniprot Swiss-Prot database from [https://www.uniprot.org/help/downloads]
 
-4. Modify the Snakefile as shown [here](snakefile_mod)
+4. Modify the Snakefile as shown [here](./Snakefile_mod)
 
 5. run snakemake within the ideel directory
 
