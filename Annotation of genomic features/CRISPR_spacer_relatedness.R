@@ -19,9 +19,6 @@ net<-delete.edges(net, E(net)[weight=0])
 colrs <- c("darkcyan", "tomato", "gold")
 V(net)$color <- colrs[V(net)$type]
 
-# scale node size based on number of spacers
-#V(net)$size <- V(net)$spacers
-
 # scale edge size based on weight
 E(net)$width <- E(net)$weight*5
 
