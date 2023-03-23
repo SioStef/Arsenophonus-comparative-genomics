@@ -111,7 +111,7 @@ p1<-ggplot(ddf, aes(x=value, y=variable, fill=variable)) +
   theme_ridges(font_size = 16) +
   scale_fill_manual(values=c("#6B990F","#990F0F","#0F6B99")) +
   scale_x_continuous(limits=c(-0.2,0.5),name =expression(paste(italic("Δ"),"dN/dS"))) +
-  scale_y_discrete(name="", labels=c("vertical","nasoniae","apicola"),limits=rev) +
+  scale_y_discrete(name="", labels=c("triatominarum","nasoniae","apicola"),limits=rev) +
   theme(legend.position="none") +
   geom_vline(xintercept = 0, linetype="dashed", 
              color = "red", size=1)
@@ -162,7 +162,7 @@ p2<-ggplot(allRELAX_kn, aes(x=variable, y=log(value,2))) +
   geom_boxplot(aes(color=variable), outlier.shape = NA) +
   scale_color_manual(values=c("red","black","#6B990F","#990F0F","#0F6B99")) +
   geom_point(aes(color=qc), position=position_jitterdodge(jitter.width =0.4, dodge.width = 0), alpha=0.5) +
-  scale_x_discrete(name="", labels=c("apicola","nasoniae","vertical")) +
+  scale_x_discrete(name="", labels=c("apicola","nasoniae","triatominarum")) +
   geom_hline(yintercept = 0, colour = "red", linetype = "dashed") +
   theme_bw() +
   scale_y_continuous(limits=c(-6,6),name ="relaxation or intensification parameter k (log2)") +
