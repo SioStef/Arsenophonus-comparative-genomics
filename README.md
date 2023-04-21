@@ -11,3 +11,4 @@ This repository contains data and code for reproducing the analyses from the Ars
 - In the directory [Pseudogenes](./Pseudogenes) can be found the workflow for computing the fraction of pseudogenised genes across the Arsenophonus genomes.
 - The directory [RSA](./RSA) contains the worklow for reproducing the dNdS analysis and the analysis for relaxation of selection using the [HyPhy](http://hyphy.org/) package.
 - The directory [defence](./defence) contains the R script for reproducing the CRISPR spacer-relatedness analysis.
+- The directory [metabolism](./metabolism) contains the anvio workflow for the estimation of the metabolic potential of the Arsenophonus/Riesia clade and the resulting matrices.
