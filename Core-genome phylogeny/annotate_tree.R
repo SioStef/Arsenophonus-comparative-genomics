@@ -8,7 +8,7 @@ library(treeio)
 
 
 
-files<-dir(pattern =".fasta")
+files<-dir(pattern =".fasta") #Initialize fasta files with gene sequences for each genome. If plasmids are present, save genes in separate file (e.g. genome1-ch.fasta genome1-p.fasta)
 anot<- read.csv(file="tmp_table.txt", sep = "\t", header = T)
 
 # create an empty data frame and populate it with GC and aa-lengths per CDS per genome
