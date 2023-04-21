@@ -2,21 +2,21 @@ strain	name	GC-cds	mode	status	size	pseudo	plasmids	phages	crispr
 aApi_AU	aApi_AU	0.385678182803413	environmental	complete	3274406	0.07	5	4	Type I-F
 ArsAcraccivora	Ars. A. craccivora	0.426651503674689	vertical	complete	2424437	0.53	1	1	NA
 ArsAsiaII3	Ars. B. tabaci (AsiaII3)	0.394433907823886	vertical	draft	2328823	0.46	NA	NA	Type I-F
-ArsBee02222015	aApi_CH	0.384355750862823	environmental	draft	3315916	0.11	NA	1	Type I-Fv
-ArsBeeUS	aApi_US	0.385278763342325	environmental	complete	3639254	0.07	6	11	Type I-Fv
+aApi_CH	aApi_CH	0.384355750862823	environmental	draft	3315916	0.11	NA	1	Type I-Fv
+aApi_US	aApi_US	0.385278763342325	environmental	complete	3639254	0.07	6	11	Type I-Fv
 ArsBTMEDQ21	Ars. B. tabaci (BTMEDQ21)	0.381388698626998	vertical	draft	1860497	0.49	NA	0	NA
 ArsenophonusARAF	Ars. A. floccissimus (ARAF)	0.383953193152884	vertical	draft	3001875	0.65	NA	8	Type I-F
 ArsenophonusDSM15247	Arsenophonus DSM15247	0.385374414348836	mixed	draft	3670548	0.14	NA	1	Type I-F
 ArsenophonusENCA	Ars. Entylia carinata (ENCA)	0.407293888800315	vertical	draft	3228533	0.3	NA	NA	NA
 ArsenophonusHangzhou	Ars. N. lugens (Hangzhou)	0.388563777374979	vertical	draft	2953863	0.1	NA	2	NA
-ArsFIN	aNv_FIN	0.392170497729204	mixed	complete	4987107	0.2	17	29	Type I-F
-ArsIxoH	aIh	0.384917092234875	vertical	complete	3650371	0.09	7	5	Type I-E
-ArsLausane	aNv_Lausanne	0.39136793807804	mixed	complete	4741277	0.21	16	24	Type I-F
+aNv_FIN	aNv_FIN	0.392170497729204	mixed	complete	4987107	0.2	17	29	Type I-F
+aIh	aIh	0.384917092234875	vertical	complete	3650371	0.09	7	5	Type I-E
+aNv_CH	aNv_CH	0.39136793807804	mixed	complete	4741277	0.21	16	24	Type I-F
 ArsPB	aPb	0.383061322372999	environmental	complete	3465850	0.07	4	2	Type I-F
-ArsPerl	aNv_Perl	0.394259727199121	mixed	complete	5080918	0.22	20	30	Type I-F
-ArsPV	aPv	0.391208698420337	vertical	complete	4296919	0.12	18	17	Type I-F
-ArsUK	aNv_UK	0.391060722897384	mixed	complete	4739501	0.21	16	26	Type I-F
-ARTi2015	Arsenophonus triatominarum	0.390702761254544	vertical	draft	4721517	0.35	NA	22	NA
+aPb	aNv_CAN	0.394259727199121	mixed	complete	5080918	0.22	20	30	Type I-F
+aPv	aPv	0.391208698420337	vertical	complete	4296919	0.12	18	17	Type I-F
+aNv_UK	aNv_UK	0.391060722897384	mixed	complete	4739501	0.21	16	26	Type I-F
+aTi2015	Arsenophonus triatominarum	0.390702761254544	vertical	draft	4721517	0.35	NA	22	NA
 EA	E. adleriae EA	0.388195785955549	unknown	draft	4180453	0.16	NA	1	Type I-F
 EB1	E. brunniventris EB1	0.387728331010825	unknown	draft	4015630	0.15	NA	1	Type I-F
 EB2	E. brunniventris EB2	0.394480829740284	unknown	draft	3060324	0.22	NA	1	NA
