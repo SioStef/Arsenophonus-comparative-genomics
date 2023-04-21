@@ -12,8 +12,8 @@ ArsenophonusHangzhou	Ars. N. lugens (Hangzhou)	0.388563777374979	vertical	draft	
 aNv_FIN	aNv_FIN	0.392170497729204	mixed	complete	4987107	0.2	17	29	Type I-F
 aIh	aIh	0.384917092234875	vertical	complete	3650371	0.09	7	5	Type I-E
 aNv_CH	aNv_CH	0.39136793807804	mixed	complete	4741277	0.21	16	24	Type I-F
-ArsPB	aPb	0.383061322372999	environmental	complete	3465850	0.07	4	2	Type I-F
-aPb	aNv_CAN	0.394259727199121	mixed	complete	5080918	0.22	20	30	Type I-F
+aPb	aPb	0.383061322372999	environmental	complete	3465850	0.07	4	2	Type I-F
+aNv_CAN	aNv_CAN	0.394259727199121	mixed	complete	5080918	0.22	20	30	Type I-F
 aPv	aPv	0.391208698420337	vertical	complete	4296919	0.12	18	17	Type I-F
 aNv_UK	aNv_UK	0.391060722897384	mixed	complete	4739501	0.21	16	26	Type I-F
 aTi2015	Arsenophonus triatominarum	0.390702761254544	vertical	draft	4721517	0.35	NA	22	NA
